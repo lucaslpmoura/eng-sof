@@ -3,7 +3,7 @@ import { User } from "./User";
 
 export class UserList {
     list: User[];
-    maxSize: number = parseInt(process.env.MAX_USERS) || 10;
+    maxSize: number = 10;
 
 
     constructor() {
@@ -16,22 +16,16 @@ export class UserList {
     }
 
     private createUser(userData: any) : User {
-        if (!userData.email) {
-            throw new RegisterUserError('User email missing. ', RegisterUserErrorType.FIELDS_MISSING);
-        }
-        if (!userData.username) {
-            throw new RegisterUserError('Username missing.', RegisterUserErrorType.FIELDS_MISSING);
-        }
-        if (!userData.password) {
-            throw new RegisterUserError('User password missing.', RegisterUserErrorType.FIELDS_MISSING);
-        }
-
         if(typeof userData.email != 'string' || !userData.email.includes('@')){
-            throw new RegisterUserError('User email is invalid.', RegisterUserErrorType.INVALID_FIELDS);
+            throw new UserListError('User email is invalid.', UserListErrorType.INVALID_FIELDS);
         }
 
-        if(typeof userData.username != 'string' || /^[A-Za-z0-9]*$/.test(userData.username)){
-            throw new RegisterUserError('Invalid username.', RegisterUserErrorType.INVALID_FIELDS);
+        if(typeof userData.username != 'string' || !/^[A-Za-z0-9]*$/.test(userData.username)){
+            throw new UserListError('Invalid username.', UserListErrorType.INVALID_FIELDS);
+        }
+
+          if (typeof userData.password != 'string') {
+            throw new UserListError('User password is invalid.', UserListErrorType.INVALID_FIELDS);
         }
 
         return new User(userData.email, userData.username, userData.password);
@@ -39,14 +33,16 @@ export class UserList {
 
     private addUser(user: User): void {
         if(this.list.length >= this.maxSize){
-            throw new RegisterUserError('Maximum number of users reached.', RegisterUserErrorType.LIST_FULL);
+            throw new UserListError('Maximum number of users reached.', UserListErrorType.LIST_FULL);
         }
         if(this.isUserRegistered(user)){
-            throw new RegisterUserError('User with this email is already Registered.', RegisterUserErrorType.USER_REGISTERED);
+            throw new UserListError('User with this email is already Registered.', UserListErrorType.USER_REGISTERED);
         }
 
         this.list.push(user);
     }
+
+
 
     private isUserRegistered(user: User): boolean {
         for(let oldUser of this.list){
@@ -60,10 +56,10 @@ export class UserList {
 
 }
 
-class RegisterUserError extends Error {
-    type: RegisterUserErrorType
+class UserListError extends Error {
+    type: UserListErrorType
 
-    constructor(msg: string, type: RegisterUserErrorType) {
+    constructor(msg: string, type: UserListErrorType) {
         super(msg);
         this.type = type;
     }
@@ -72,10 +68,10 @@ class RegisterUserError extends Error {
 }
 
 
-export enum RegisterUserErrorType {
-    FIELDS_MISSING,
+export enum UserListErrorType {
     INVALID_FIELDS,
 
     LIST_FULL,
-    USER_REGISTERED
+    USER_REGISTERED,
+
 }

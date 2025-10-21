@@ -1,4 +1,4 @@
-import { UserList, RegisterUserErrorType } from './UserList';
+import { UserList, UserListErrorType } from './UserList';
 
 import express from 'express';
 
@@ -32,19 +32,15 @@ app.post('/users', (req, res) => {
         message = 'A new user could not be created.';
 
         switch (err.type) {
-            case RegisterUserErrorType.FIELDS_MISSING:
-                status = 400;
-                message += ' Fields Missing.';
-                break;
-            case RegisterUserErrorType.INVALID_FIELDS:
+            case UserListErrorType.INVALID_FIELDS:
                 status = 400;
                 message += ' Inavlid Fields.';
                 break;
-            case RegisterUserErrorType.USER_REGISTERED:
+            case UserListErrorType.USER_REGISTERED:
                 status = 400;
                 message += ' User with this email aready exists.';
                 break;
-            case RegisterUserErrorType.LIST_FULL:
+            case UserListErrorType.LIST_FULL:
                 status = 500;
                 message += 'Maximum number of users already registered.';
                 break;
@@ -58,6 +54,8 @@ app.post('/users', (req, res) => {
     res.status(status);
     res.send({ 'message': message });
 });
+
+
 
 app.listen(port, () => {
     return console.log(`User Service is listening at http://localhost:${port}`);
