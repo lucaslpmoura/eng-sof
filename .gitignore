@@ -1,0 +1,49 @@
+# ========================
+# Node / TypeScript .gitignore
+# ========================
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+tmp/
+temp/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
+*.swo
+*.swn
+*.bak
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+#
