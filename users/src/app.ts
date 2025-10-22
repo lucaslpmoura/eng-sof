@@ -11,9 +11,9 @@ const port = 8001;
 let users = new UserList();
 
 // Gets the list of all registered users
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
     res.status(200);
-    res.send(users.list);
+    res.send(await users.getAllUsers());
 });
 
 

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "postgres": "^3.4.7",
     "tsc-alias": "^1.8.16",
     "uuid": "^13.0.0"
   }
