@@ -8,5 +8,9 @@
     "skipLibCheck": true,
     "outDir": "dist"
   },
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "verbose": true
+  },
   "include": ["src", "tests"]
 }
