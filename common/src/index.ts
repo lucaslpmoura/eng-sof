@@ -1,4 +1,5 @@
 export * from './DBManager.js'
+export * from './UserDBManager.js'
 export * from './Encryption.js'
 export * from './Entity.js'
 export * from './EntityType.js'

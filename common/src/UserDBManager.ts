@@ -1,9 +1,9 @@
-import { User } from "@eng-sof/common"
-import { DBManager } from "@eng-sof/common";
+import { User } from "./User.js"
+import { DBManager } from "./DBManager.js"
 
 import postgres from 'postgres'
 
-export class UserList extends DBManager{
+export class UserDBManager extends DBManager{
     maxSize: number = 3;
     
 
@@ -20,16 +20,16 @@ export class UserList extends DBManager{
     }
 
     private createUser(userData: any): User {
-        if (typeof userData.email != 'string' || !userData.email.includes('@')) {
-            throw new UserListError('User email is invalid.', UserListErrorType.INVALID_FIELDS);
+        if (typeof userData.email != 'string' || !userData.email.includes('@')) {;
+            throw new UserError('User email is invalid.', UserErrorType.INVALID_FIELDS);
         }
 
         if (typeof userData.username != 'string' || !/^[A-Za-z0-9]*$/.test(userData.username)) {
-            throw new UserListError('Invalid username.', UserListErrorType.INVALID_FIELDS);
+            throw new UserError('Invalid username.', UserErrorType.INVALID_FIELDS);
         }
 
         if (typeof userData.password != 'string') {
-            throw new UserListError('User password is invalid.', UserListErrorType.INVALID_FIELDS);
+            throw new UserError('User password is invalid.', UserErrorType.INVALID_FIELDS);
         }
 
         return new User(userData.username, userData.email, userData.password);
@@ -39,11 +39,11 @@ export class UserList extends DBManager{
         console.log('Checking size..')
         let size = await this.size();
         if (size >= this.maxSize) {
-            throw new UserListError('Maximum number of users reached.', UserListErrorType.LIST_FULL);
+            throw new UserError('Maximum number of users reached.', UserErrorType.LIST_FULL);
         }
         
         if (await this.isUserRegistered(user)) {
-            throw new UserListError('User with this email is already Registered.', UserListErrorType.USER_REGISTERED);
+            throw new UserError('User with this email is already Registered.', UserErrorType.USER_REGISTERED);
         }
 
         //this.list.push(user);
@@ -101,10 +101,10 @@ export class UserList extends DBManager{
 
 }
 
-class UserListError extends Error {
-    type: UserListErrorType
+class UserError extends Error {
+    type: UserErrorType
 
-    constructor(msg: string, type: UserListErrorType) {
+    constructor(msg: string, type: UserErrorType) {
         super(msg);
         this.type = type;
     }
@@ -113,7 +113,7 @@ class UserListError extends Error {
 }
 
 
-export enum UserListErrorType {
+export enum UserErrorType {
     INVALID_FIELDS,
 
     LIST_FULL,

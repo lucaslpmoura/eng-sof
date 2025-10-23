@@ -1,4 +1,4 @@
-import { UserList, UserListErrorType } from './UserList.js';
+import { UserDBManager, UserErrorType } from '@eng-sof/common';
 
 import express from 'express';
 
@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 const port = 8001;
 
-let users = new UserList();
+let users = new UserDBManager();
 
 // Gets the list of all registered users
 app.get('/users', async (req, res) => {
@@ -36,15 +36,15 @@ app.post('/users', async (req, res) => {
         message = 'A new user could not be created.';
 
         switch (err.type) {
-            case UserListErrorType.INVALID_FIELDS:
+            case UserErrorType.INVALID_FIELDS:
                 status = 400;
                 message += ' Inavlid Fields.';
                 break;
-            case UserListErrorType.USER_REGISTERED:
+            case UserErrorType.USER_REGISTERED:
                 status = 400;
                 message += ' User with this email aready exists.';
                 break;
-            case UserListErrorType.LIST_FULL:
+            case UserErrorType.LIST_FULL:
                 status = 500;
                 message += 'Maximum number of users already registered.';
                 break;

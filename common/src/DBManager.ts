@@ -24,7 +24,6 @@ export abstract class DBManager {
     async fetch(key: string, value: any){
         const result = await this.sql`SELECT * FROM ${this.sql(this.table)} WHERE ${this.sql(key)}=${value}`;
         return result;
-   
     }
 
     async insert(data: any){
