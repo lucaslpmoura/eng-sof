@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "tsc && tsc-alias && node lib/app.js",
+    "run": "node lib/app.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "tsc",
     "lint": "tslint -c tslint.json src/**/*.ts",

@@ -5,10 +5,12 @@ import postgres from 'postgres'
 
 export class UserList extends DBManager{
     maxSize: number = 3;
+    
+
 
     constructor() {
         super();
-        this.table = 'User';
+        this.table = 'users';
 
     }
 
@@ -46,10 +48,10 @@ export class UserList extends DBManager{
 
         //this.list.push(user);
         try {
-            this.insertUserToDB(user)
+            this.insert(user.toSchema())
                 .then(async () => {
                     try {
-                        const result: postgres.Row = await this.getUserFromDB(user.id);
+                        const result: postgres.Row = await this.getUser(user.id);
 
                         if (result.u_id == user.id && result.email == user.email) {
                             console.log("User registered succesfully.");
@@ -70,12 +72,9 @@ export class UserList extends DBManager{
     
     }
 
-
-
     private async isUserRegistered(user: User): Promise<boolean> {
         console.log("Checking to see if user is already registered...");
-        const usersInDB = await this.sql
-            `SELECT u_id, email FROM Users WHERE email=${user.email} `;
+        const usersInDB = await this.getUser(user.email);
 
         if(usersInDB.length > 0){
             for(let row of usersInDB){
@@ -84,35 +83,21 @@ export class UserList extends DBManager{
                 }       
             }
         }
-        
         return false;
     }
 
     public async getAllUsers() {
-        return await this.getAllUsersFromDB();
+        return await this.fetchAll();
     }
 
-    public async getUser(id: string): Promise<any> {
-        return await this.getUserFromDB(id);
-    }
-
-    private async getAllUsersFromDB(): Promise<any> {
-        const users = await this.sql
-            `SELECT * FROM Users`;
-
-        return users;
-    }
-
-    private async getUserFromDB(id: string): Promise<postgres.Row> {
-        console.log(`Retrieving from DB: ${id}`)
-        const userInDB = await this.sql
-            `SELECT u_id, email FROM Users WHERE u_id=${id} `;
-        return userInDB[0];
-    }
-    
-    private async insertUserToDB(user: User): Promise<void>{
-        this.insert(user)
-    }
+    public async getUser(key: string): Promise<any> {
+        switch(key.includes('@')){
+            case true:
+                return await this.fetch('email', key);
+            case false:
+                return await this.fetch('u_id', key);
+        }
+    }    
 
 }
 

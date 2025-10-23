@@ -4,7 +4,7 @@ export abstract class DBManager {
 
     sql: postgres.Sql;
     table: string = '';
-
+    columns: string[] = [];
 
     constructor() {
         this.sql = postgres({
@@ -17,23 +17,25 @@ export abstract class DBManager {
     }
 
     async fetchAll() {
-        const result = await this.sql`SELECT * FROM ${this.table}`;
+        const result = await this.sql`SELECT * FROM ${this.sql(this.table)}`;
         return result;
     }
 
     async fetch(key: string, value: any){
-        const result = await this.sql`SELECT * FROM WHERE ${key}=${value}`;
+        const result = await this.sql`SELECT * FROM ${this.sql(this.table)} WHERE ${this.sql(key)}=${value}`;
         return result;
+   
     }
 
     async insert(data: any){
-        const result = await this.sql`INSERT INTO ${this.table} (${Object.keys(data).toString()}) VALUES (${Object.values(data).toString()})`;
+        console.log(this.sql(data, this.columns));
+        const result = await this.sql`INSERT INTO ${this.sql(this.table)} ${this.sql(data)}`;
+        console.log(result);
         return result;
     }
 
     async size(){
-
-        const result = await this.sql`SELECT COUNT(*) FROM ${this.table}`
+        const result = await this.sql`SELECT COUNT(*) FROM ${this.sql(this.table)}`;
         console.log('Size: ')
         console.log(result);
         return result[0].count;
