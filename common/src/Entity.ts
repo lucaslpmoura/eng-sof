@@ -1,5 +1,5 @@
-import { EntityType } from "./EntityType";
-import { generateEntityId } from "./UUIDGenerator";
+import { EntityType } from "./EntityType.js";
+import { generateEntityId } from "./UUIDGenerator.js";
 
 export abstract class Entity {
     id: string;

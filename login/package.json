@@ -1,0 +1,28 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": {
+    "name": "Lucas Moura"
+  },
+  "type": "module",
+  "main": "./lib/app.js",
+  "scripts": {
+    "start": "tsc && tsc-alias && node lib/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0",
+    "postgres": "^3.4.7",
+    "tsc-alias": "^1.8.16",
+    "tslint": "^5.20.1",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts"
+}

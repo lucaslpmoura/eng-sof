@@ -1,6 +1,7 @@
+import { Entity } from './Entity.js';
+import { EntityType } from './EntityType.js';
 
-import {Entity} from '../../common/src/Entity';
-import { EntityType } from '../../common/src/EntityType';
+import { encryptPassword } from './Encryption.js';
 
 export class User extends Entity{
     
@@ -12,7 +13,6 @@ export class User extends Entity{
         super(EntityType.USER);
         this.username = username;
         this.email = email;
-        this.password = password;
-        
+        this.password = encryptPassword(password);
     }
 }

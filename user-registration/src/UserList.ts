@@ -1,29 +1,20 @@
-import { User } from "./User";
+import { User } from "@eng-sof/common"
+import { DBManager } from "@eng-sof/common";
+
 import postgres from 'postgres'
 
-export class UserList {
-    list: User[];
-    maxSize: number = 10;
-
-    sql: postgres.Sql;
+export class UserList extends DBManager{
+    maxSize: number = 3;
 
     constructor() {
-        this.list = [];
+        super();
+        this.table = 'User';
 
-        this.sql = postgres({
-            host: 'localhost',            // Postgres ip address[s] or domain name[s]
-            port: 5432,          // Postgres server port[s]
-            database: 'mydb',            // Name of database to connect to
-            username: 'postgres',            // Username of database user
-            password: 'ietec',            // Password of database user
-        });
-
-        this.getAllUsersFromDB();
     }
 
-    registerUser(userData: any) {
+    async registerUser(userData: any) {
         let newUser = this.createUser(userData);
-        this.addUser(newUser);
+        await this.addUser(newUser);        
     }
 
     private createUser(userData: any): User {
@@ -43,9 +34,12 @@ export class UserList {
     }
 
     private async addUser(user: User): Promise<void> {
-        if (this.list.length >= this.maxSize) {
+        console.log('Checking size..')
+        let size = await this.size();
+        if (size >= this.maxSize) {
             throw new UserListError('Maximum number of users reached.', UserListErrorType.LIST_FULL);
         }
+        
         if (await this.isUserRegistered(user)) {
             throw new UserListError('User with this email is already Registered.', UserListErrorType.USER_REGISTERED);
         }
@@ -55,7 +49,7 @@ export class UserList {
             this.insertUserToDB(user)
                 .then(async () => {
                     try {
-                        const result: postgres.Row = await this.getUserFromDB(user);
+                        const result: postgres.Row = await this.getUserFromDB(user.id);
 
                         if (result.u_id == user.id && result.email == user.email) {
                             console.log("User registered succesfully.");
@@ -82,7 +76,7 @@ export class UserList {
         console.log("Checking to see if user is already registered...");
         const usersInDB = await this.sql
             `SELECT u_id, email FROM Users WHERE email=${user.email} `;
-    
+
         if(usersInDB.length > 0){
             for(let row of usersInDB){
                 if(row.email == user.email){
@@ -98,6 +92,10 @@ export class UserList {
         return await this.getAllUsersFromDB();
     }
 
+    public async getUser(id: string): Promise<any> {
+        return await this.getUserFromDB(id);
+    }
+
     private async getAllUsersFromDB(): Promise<any> {
         const users = await this.sql
             `SELECT * FROM Users`;
@@ -105,21 +103,15 @@ export class UserList {
         return users;
     }
 
-    private async getUserFromDB(user: User): Promise<postgres.Row> {
-        console.log(`Retrieving from DB: ${user.id}`)
+    private async getUserFromDB(id: string): Promise<postgres.Row> {
+        console.log(`Retrieving from DB: ${id}`)
         const userInDB = await this.sql
-            `SELECT u_id, email FROM Users WHERE u_id=${user.id} `;
-        console.log(userInDB);
+            `SELECT u_id, email FROM Users WHERE u_id=${id} `;
         return userInDB[0];
     }
-
-    private async insertUserToDB(user: User): Promise<void> {
-        console.log("Inserting User to DB...")
-        const userInDB = await this.sql
-            `INSERT INTO Users (u_id, createdTime, e_type, username, email, pword)
-         VALUES (${user.id}, ${user.createdTime}, ${user.type}, ${user.username}, ${user.email}, ${user.password})`;
-
-        console.log("Inserted into DB");
+    
+    private async insertUserToDB(user: User): Promise<void>{
+        this.insert(user)
     }
 
 }

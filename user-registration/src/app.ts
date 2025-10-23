@@ -1,8 +1,6 @@
-import { UserList, UserListErrorType } from './UserList';
+import { UserList, UserListErrorType } from './UserList.js';
 
 import express from 'express';
-
-
 
 const app = express();
 app.use(express.json());
@@ -12,19 +10,25 @@ let users = new UserList();
 
 // Gets the list of all registered users
 app.get('/users', async (req, res) => {
+    let result  : any[] = [];
     res.status(200);
-    res.send(await users.getAllUsers());
+    if(req.query.id){
+        result = await users.getUser(req.query.id.toString());
+    }else{
+        result = await users.getAllUsers();
+    }
+    res.send(result);
 });
 
 
 // Adds a new user to the list of registered users
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     let status = 500;
     let message = 'The server could not handle your request.';
 
 
     try {
-        users.registerUser(req.body);
+        await users.registerUser(req.body);
         status = 200;
         message = 'User registered succesfully.';
     } catch (err: any) {
