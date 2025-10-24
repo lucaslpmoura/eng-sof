@@ -31,9 +31,10 @@ app.get('/post', async (req, res) => {
             result = await postManager.getAllPosts();
         }
 
-        res.status(200);
-        res.send({ message: 'Got post(s)', posts: result });
-
+        status = 200;
+        res.status(status);
+        res.send({ status: status, message: 'Got post(s)', posts: result });
+        return;
     } catch (err: any) {
         console.log(`Failed to get post(s): ${err.message}`);
         msg = err.msg;
@@ -41,7 +42,7 @@ app.get('/post', async (req, res) => {
     }
 
     res.status(status);
-    res.send(msg);
+    res.send({status: status, message: msg});
 });
 
 

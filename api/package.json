@@ -1,0 +1,34 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": {
+    "name": "Lucas Moura"
+  },
+  "type": "module",
+  "main": "./lib/index.js",
+  "scripts": {
+    "start": "tsc && tsc-alias && node lib/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "@types/axios": "^0.9.36",
+    "tsc-alias": "^1.8.16",
+    "tslint": "^5.20.1",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts",
+  "devDependencies": {
+    "@types/express": "^5.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
