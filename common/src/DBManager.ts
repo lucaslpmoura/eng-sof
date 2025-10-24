@@ -27,16 +27,17 @@ export abstract class DBManager {
     }
 
     async insert(data: any){
-        console.log(this.sql(data, this.columns));
         const result = await this.sql`INSERT INTO ${this.sql(this.table)} ${this.sql(data)}`;
-        console.log(result);
+        return result;
+    }
+
+    async delete(key: string, value: any){
+        const result = await this.sql`DELETE FROM ${this.sql(this.table)} WHERE ${this.sql(key)}=${value}`;
         return result;
     }
 
     async size(){
         const result = await this.sql`SELECT COUNT(*) FROM ${this.sql(this.table)}`;
-        console.log('Size: ')
-        console.log(result);
         return result[0].count;
     }
     

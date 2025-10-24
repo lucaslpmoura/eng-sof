@@ -20,10 +20,10 @@ export class Auth {
             const userId = typeof payload != 'string' && payload.user;
 
             if(!userId){
-                return res.status(401).sendf({message: 'Invalid Token.'});
+                return res.status(401).send({message: 'Invalid Token.'});
             }
 
-            res.set('user',payload.user);
+            req.headers['user'] = JSON.parse(payload.user).email;
 
             return next();
         }catch (error : any) {

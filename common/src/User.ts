@@ -9,7 +9,9 @@ export class User extends Entity{
     email: string;
     password: string;
 
-    sqlColumns: string[] = ['u_id','createdtime','e_type','username','email','pword'];
+    isAdmin: boolean = false;
+
+    sqlColumns: string[] = ['u_id','createdtime','e_type','username','email','pword', 'isadmin'];
 
     constructor(username: string, email: string, password: string) {
         super(EntityType.USER);
@@ -25,7 +27,19 @@ export class User extends Entity{
             'e_type': this.type,
             'username': this.username,
             'email': this.email,
-            'pword': this.password
+            'pword': this.password,
+            'isadmin': this.isAdmin
         }
+    }
+
+    public static fromSchema(schema: any) : User {
+        let user =  new User(
+            schema.username, schema.email, ''
+        );
+        user.id = schema.u_id;
+        user.createdTime = schema.createdtime;
+        user.isAdmin = schema.isadmin;
+
+        return user;
     }
 }

@@ -27,12 +27,13 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"downlevelIteration": true,
+			"esModuleInterop": true,
 		"declaration": true,
-		"esModuleInterop": true,
 
 		"pretty": true
 	},
 	"include": [
 		"typings/**/*",
-		"src/**/*"]
+		"src/**/*"
+	]
 }

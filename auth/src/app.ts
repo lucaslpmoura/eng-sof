@@ -1,5 +1,5 @@
 import { UserDBManager, encryptPassword } from '@eng-sof/common';
-import { Auth, PRIVATE_KEY } from './Auth.js';
+import { Auth, PRIVATE_KEY } from '@eng-sof/common';
 
 
 import express, { json } from 'express';
@@ -52,10 +52,6 @@ app.post('/login', async (req, res) => {
 });
 
 app.use('/*splat', Auth.validateToken);
-
-app.get('/private', (req,res) => {
-    return res.status(200).send({message: 'This is a private route!'});
-})
 
 app.listen(port, () => {
     return console.log(`Login Service is listening at http://localhost:${port}`);

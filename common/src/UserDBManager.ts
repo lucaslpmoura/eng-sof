@@ -4,10 +4,8 @@ import { DBManager } from "./DBManager.js"
 import postgres from 'postgres'
 
 export class UserDBManager extends DBManager{
-    maxSize: number = 3;
+    maxSize: number = 100;
     
-
-
     constructor() {
         super();
         this.table = 'users';
@@ -53,7 +51,11 @@ export class UserDBManager extends DBManager{
                     try {
                         const result: postgres.Row = await this.getUser(user.id);
 
-                        if (result.u_id == user.id && result.email == user.email) {
+                        if(result.length != 1){
+                            throw new Error("DB Error!");
+                        }
+
+                        if (result[0].u_id == user.id && result[0].email == user.email) {
                             console.log("User registered succesfully.");
                         } else {
                             throw new Error("Failed to register user!");
@@ -68,8 +70,6 @@ export class UserDBManager extends DBManager{
         }catch(err: any){
             console.log(`Failed to register user: ${err.message}`);
         }
-        
-    
     }
 
     private async isUserRegistered(user: User): Promise<boolean> {
