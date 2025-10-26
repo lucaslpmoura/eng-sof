@@ -78,10 +78,9 @@ app.get('/api/post', async (req, res) => {
             }
 
             query = `?${Object.keys(req.query)[0]}=${Object.values(req.query)[0]}`;
-            console.log(query);
         }
 
-        const response = await fetch(`${BASE_URI}:${FEED_PORT}${FEED_ENDPOINT}`, {
+        const response = await fetch(`${BASE_URI}:${FEED_PORT}${FEED_ENDPOINT}${query}`, {
             method: "GET",
             headers: {
                 auth: token
@@ -89,6 +88,7 @@ app.get('/api/post', async (req, res) => {
         });
 
         const payload: any = await response.json();
+ 
         res.status(payload.status).send(payload);
     }catch(err: any){
         console.error(`Error communicating with feed service: ${err.message}`);
@@ -111,19 +111,52 @@ app.post('/api/post', async (req, res) => {
             method: "POST",
             body: JSON.stringify(req.body),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'auth': token
             }
         });
 
-        const payload :any = response.json();
+        const payload :any = await response.json();
         res.status(payload.status).send(payload);
     }catch(err: any){
-        console.error(`Error communicating with feed service: ${err.message}`);
+        console.error(`Error communicating POST with feed service: ${err.message}`);
         res.status(500).send({'status': 500, 'message': "Error with the API."});
     }
 });
+
 // Deleting Post
-//app.delete('/api/post');
+app.delete('/api/post', async (req, res) => {
+    try{
+        const token = req.get('auth');
+        if(!token) {
+            res.status(401).send({status: 401, 'message': 'No token provided.'});
+            return;
+        }
+
+        if (!req.query.id) {
+            res.status(400).send({message: "No Post ID specified."});
+            return;
+        }
+
+        const query = `?id=${req.query.id}`;
+        console.log(query);
+
+        const response = await fetch(`${BASE_URI}:${FEED_PORT}${FEED_ENDPOINT}${query}`, {
+            method: "DELETE",
+            body: JSON.stringify(req.body),
+            headers: {
+                'Content-Type': 'application/json',
+                'auth': token
+            }
+        });
+
+        const payload :any = await response.json();
+        res.status(payload.status).send(payload);
+    }catch(err:any){
+        console.error(`Error communicating DELETE with feed serivce: ${err.message}`);
+        res.status(500).send({'status': 500, 'message': 'Error with the API.'});
+    }
+});
 
 app.listen(port, () => {
     return console.log(`Application is listening at http://localhost:${port}`);

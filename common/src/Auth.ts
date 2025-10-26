@@ -21,7 +21,7 @@ export class Auth {
 
     public static validateToken(req : any, res : any, next: any) {
         const token =  req.headers.auth;
-        if(!token) return res.status(401).send({message: 'Acces Denied. No Token Provided.'});
+        if(!token) return res.status(401).send({message: 'Access Denied. No Token Provided.', status: 401});
 
         try{
             const payload = jsonwebtoken.verify(token, PRIVATE_KEY);
