@@ -89,6 +89,7 @@ app.get('/api/post', async (req, res) => {
         });
 
         const payload: any = await response.json();
+        console.log(payload);
         res.status(payload.status).send(payload);
     }catch(err: any){
         console.error(`Error communicating with feed service: ${err.message}`);
