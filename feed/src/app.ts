@@ -101,8 +101,6 @@ app.delete('/post', async (req, res) => {
                 const result = await userManager.getUser(userEmail);
                 if (result.length == 1) {
                     const author = User.fromSchema(result[0]);
-                    console.log(author);
-                    console.log(post);
 
                     if (author.isAdmin || author.id == post.author_id) {
                         await postManager.deletePost(postId);
@@ -122,9 +120,6 @@ app.delete('/post', async (req, res) => {
         }
 
 
-
-
-
     } catch (err: any) {
         console.error(`Failed to delete post ${postId}: ${err.message}`);
         status = 400;
@@ -132,7 +127,7 @@ app.delete('/post', async (req, res) => {
     }
 
     res.status(status);
-    res.send(msg);
+    res.send({message: msg, status: status});
 })
 
 app.listen(port, () => {
