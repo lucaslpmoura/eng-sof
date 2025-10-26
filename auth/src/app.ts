@@ -3,6 +3,7 @@ import { PRIVATE_KEY } from '@eng-sof/common';
 
 
 import express, { json } from 'express';
+import cors from 'cors';
 import jsonwebtoken from 'jsonwebtoken'
 
 const app = express();
@@ -11,6 +12,9 @@ const port = 8002;
 
 
 const dbManager = new UserDBManager();
+
+app.use(cors());
+
 
 app.post('/login', async (req, res) => {
     let status = 400;

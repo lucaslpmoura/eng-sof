@@ -25,6 +25,7 @@
   "dependencies": {
     "@eng-sof/common": "file:common",
     "@types/express": "^5.0.4",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "tsc-alias": "^1.8.16",
