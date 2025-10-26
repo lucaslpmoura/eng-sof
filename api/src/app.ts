@@ -150,7 +150,8 @@ app.delete('/api/post', async (req, res) => {
             }
         });
 
-
+        const payload :any = await response.json();
+        res.status(payload.status).send(payload);
     }catch(err:any){
         console.error(`Error communicating DELETE with feed serivce: ${err.message}`);
         res.status(500).send({'status': 500, 'message': 'Error with the API.'});
