@@ -2,6 +2,7 @@ import express from 'express';
 import { Response } from 'express';
 
 import 'dotenv/config'
+import { Cors } from '@eng-sof/common';
 
 const PROTOCOL = 'http://'
 const APP_IP_ADDR = 'localhost';
@@ -19,6 +20,9 @@ const FEED_ENDPOINT = '/post';
 const app = express();
 app.use(express.json());
 const port = 8000;
+
+app.use(Cors.setCors);
+app.options('/*route', Cors.setCors);
 
 // User Registration
 app.post('/api/users', async (req, res) => {

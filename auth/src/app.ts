@@ -13,7 +13,7 @@ const port = 8002;
 
 const dbManager = new UserDBManager();
 
-app.use('/*splat', Cors.setCors);
+
 
 app.post('/login', async (req, res) => {
     let status = 400;
@@ -40,8 +40,7 @@ app.post('/login', async (req, res) => {
             status = 200;
             msg = 'Login made succesfully';
 
-            
-
+            console.log(res.get('Access-Control-Allow-Origin'));
             res.status(status);
             res.send({ status: status, message: msg, token: token });
         }else{
