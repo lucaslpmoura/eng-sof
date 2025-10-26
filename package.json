@@ -1,0 +1,39 @@
+{
+  "name": "eng-sof",
+  "version": "1.0.0",
+  "main": "./lib/index.js",
+  "scripts": {
+    "start": "npm start --prefix ./user-registration & npm start --prefix ./auth & npm start --prefix ./feed & npm start --prefix ./api",
+    "test": "jest",
+    "build": "tsc",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaslpmoura/eng-sof.git"
+  },
+  "author": {
+    "name": "Lucas Moura"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucaslpmoura/eng-sof/issues"
+  },
+  "homepage": "https://github.com/lucaslpmoura/eng-sof#readme",
+  "description": "",
+  "dependencies": {
+    "@eng-sof/common": "file:common",
+    "@types/express": "^5.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "tsc-alias": "^1.8.16",
+    "tslint": "^6.1.3",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts"
+}

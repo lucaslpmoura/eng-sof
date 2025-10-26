@@ -98,7 +98,30 @@ app.get('/api/post', async (req, res) => {
 
 
 // Making Post
-//app.post('/api/post');
+app.post('/api/post', async (req, res) => {
+    try{
+        const token = req.get('auth');
+
+        if(!token) {
+            res.status(401).send({status: 401, 'message': 'No token provided.'});
+            return;
+        }
+
+        const response = await fetch(`${BASE_URI}:${FEED_PORT}${FEED_ENDPOINT}`, {
+            method: "POST",
+            body: JSON.stringify(req.body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const payload :any = response.json();
+        res.status(payload.status).send(payload);
+    }catch(err: any){
+        console.error(`Error communicating with feed service: ${err.message}`);
+        res.status(500).send({'status': 500, 'message': "Error with the API."});
+    }
+});
 // Deleting Post
 //app.delete('/api/post');
 

@@ -76,7 +76,7 @@ app.post('/post', async (req, res) => {
 
 
     res.status(status);
-    res.send({ message: msg });
+    res.send({ message: msg, status: status });
 
 });
 

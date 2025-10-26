@@ -26,7 +26,6 @@ app.post('/users', async (req, res) => {
     let status = 500;
     let message = 'The server could not handle your request.';
 
-
     try {
         await users.registerUser(req.body);
         status = 200;

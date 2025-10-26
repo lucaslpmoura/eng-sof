@@ -1,8 +1,16 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 import jsonwebtoken from 'jsonwebtoken';
 
+
 export let PRIVATE_KEY = '';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 if(process.env.PRIVATE_KEY){
     PRIVATE_KEY = process.env.PRIVATE_KEY;
