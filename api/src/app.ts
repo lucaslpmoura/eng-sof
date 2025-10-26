@@ -112,11 +112,11 @@ app.post('/api/post', async (req, res) => {
             method: "POST",
             body: JSON.stringify(req.body),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json'  
             }
         });
 
-        const payload :any = response.json();
+        const payload :any = await response.json();
         console.log(payload);
         res.status(payload.status).send(payload);
     }catch(err: any){
