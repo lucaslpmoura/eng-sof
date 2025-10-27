@@ -52,15 +52,16 @@ app.use(Auth.validateToken);
 
 // Gets the list of all registered users
 app.get('/users', async (req, res) => {
+    let status = 200;
     let result  : any[] = [];
-    res.status(200);
+
     if(req.query.id){
         result = await users.getUser(req.query.id.toString());
     }else{
         result = await users.getAllUsers();
     }
     console.log(result);
-    res.send(result);
+    res.status(status).send({status: status, userInfo: result});
 });
 
 
