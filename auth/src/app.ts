@@ -42,7 +42,7 @@ app.post('/login', async (req, res) => {
 
             console.log(res.get('Access-Control-Allow-Origin'));
             res.status(status);
-            res.send({ status: status, message: msg, token: token });
+            res.send({ status: status, message: msg, token: token, userId: result[0].u_id });
         }else{
             throw new Error('Missing fields.');
         }
