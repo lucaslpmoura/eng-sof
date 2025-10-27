@@ -105,7 +105,7 @@ app.delete('/post', async (req, res) => {
                     if (author.isAdmin || author.id == post.author_id) {
                         await postManager.deletePost(postId);
                         status = 200;
-                        msg = 'Posted.'
+                        msg = 'Post deleted!'
                     } else {
                         status = 401;
                         msg = 'You do not have authorization to perform this operation!';
