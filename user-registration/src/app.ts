@@ -59,6 +59,7 @@ app.get('/users', async (req, res) => {
     }else{
         result = await users.getAllUsers();
     }
+    console.log(result);
     res.send(result);
 });
 
