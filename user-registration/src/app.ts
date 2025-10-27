@@ -1,4 +1,4 @@
-import { UserDBManager, UserErrorType } from '@eng-sof/common';
+import { Auth, UserDBManager, UserErrorType } from '@eng-sof/common';
 
 import express from 'express';
 
@@ -8,17 +8,7 @@ const port = 8001;
 
 let users = new UserDBManager();
 
-// Gets the list of all registered users
-app.get('/users', async (req, res) => {
-    let result  : any[] = [];
-    res.status(200);
-    if(req.query.id){
-        result = await users.getUser(req.query.id.toString());
-    }else{
-        result = await users.getAllUsers();
-    }
-    res.send(result);
-});
+
 
 
 // Adds a new user to the list of registered users
@@ -58,6 +48,19 @@ app.post('/users', async (req, res) => {
     res.send({ status: status, 'message': message });
 });
 
+app.use(Auth.validateToken);
+
+// Gets the list of all registered users
+app.get('/users', async (req, res) => {
+    let result  : any[] = [];
+    res.status(200);
+    if(req.query.id){
+        result = await users.getUser(req.query.id.toString());
+    }else{
+        result = await users.getAllUsers();
+    }
+    res.send(result);
+});
 
 
 app.listen(port, () => {
