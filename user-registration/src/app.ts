@@ -60,8 +60,18 @@ app.get('/users', async (req, res) => {
     }else{
         result = await users.getAllUsers();
     }
-    console.log(result);
-    res.status(status).send({status: status, userInfo: result});
+    
+    let user : any = 'No user with matching ID found.';
+    if(result.length > 0){
+        user = {
+            'u_id': result[0].u_id,
+            'createdtime': result[0].createdtime,
+            'username': result[0].username,
+            'email': result[0].email,
+            'isAdmin': result[0].isAdmin
+        }
+    }
+    res.status(status).send({status: status, userInfo: user});
 });
 
 
